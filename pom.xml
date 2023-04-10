@@ -1,5 +1,5 @@
 <!-- 
-   Copyright 2021 Christian Heina
+   Copyright 2023 Christian Heina
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -23,7 +23,8 @@
 	<packaging>jar</packaging>
 
 	<name>Half4j</name>
-	<description>Half4j provides functionality for working with half precision (FP16) according to IEEE 754 standard.</description>
+	<description>Half4j provides functionality for working with half precision (FP16) according to IEEE 754 standard. 
+		Half class provided by library is implemented to provide, as much as possible, the same interface as java.lang.Float and java.lang.Double.</description>
 	<url>https://github.com/christianheina/half4j</url>
 
 	<properties>
