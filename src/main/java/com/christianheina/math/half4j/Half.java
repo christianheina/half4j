@@ -23,55 +23,84 @@ package com.christianheina.math.half4j;
  * In addition, this class provides several methods for converting a {@code Half} to a {@code String} and a
  * {@code String} to a {@code Half}, as well as other constants and methods useful when dealing with a {@code Half}.
  * 
+ * <p>
+ * {@code Half} is implemented to provide, as much as possible, the same interface as {@link Float} and {@link Double}.
+ * 
  * @author Christian Heina (developer@christianheina.com)
  */
 public class Half extends Number implements Comparable<Half> {
 
     /**
-     * A constant holding the positive infinity of type {@code Half}. It is equal to the value returned by
-     * {@code Half.shortBitsToHalf((short)0x7c00)}.
+     * A constant holding the positive infinity of type {@code Half}.
+     * 
+     * <p>
+     * It is equal to the value returned by {@link #shortBitsToHalf(short) shortBitsToHalf((short)0x7c00)}.
      */
     public static final Half POSITIVE_INFINITY = shortBitsToHalf((short) 0x7c00);
 
     /**
-     * A constant holding the negative infinity of type {@code Half}. It is equal to the value returned by
-     * {@code Half.shortBitsToHalf((short)0xfc00)}.
+     * A constant holding the negative infinity of type {@code Half}.
+     * 
+     * <p>
+     * It is equal to the value returned by {@link #shortBitsToHalf(short) shortBitsToHalf((short)0xfc00)}.
      */
     public static final Half NEGATIVE_INFINITY = shortBitsToHalf((short) 0xfc00);
 
     /**
-     * A constant holding a Not-a-Number (NaN) value of type {@code Half}. It is equivalent to the value returned by
-     * {@code Half.shortBitsToHalf((short)0x7c01)}.
+     * A constant holding a Not-a-Number (NaN) value of type {@code Half}.
+     * 
+     * <p>
+     * It is equivalent to the value returned by {@link #shortBitsToHalf(short) shortBitsToHalf((short)0x7e00)}.
      */
     public static final Half NaN = shortBitsToHalf((short) 0x7e00);
 
     /**
      * A constant holding the largest positive finite value of type {@code Half},
-     * (2-2<sup>-10</sup>)&middot;2<sup>15</sup>. It is equal to {@code Half.shortBitsToHalf((short)0x7bff)}.
+     * (2-2<sup>-10</sup>)&middot;2<sup>15</sup>.
+     * 
+     * <p>
+     * It is equal to {@link #shortBitsToHalf(short) shortBitsToHalf((short)0x7bff)}.
      */
     public static final Half MAX_VALUE = shortBitsToHalf((short) 0x7bff);
 
     /**
-     * A constant holding the smallest positive normal value of type {@code Half}, 2<sup>-14</sup>. It is equal to
-     * {@code Half.shortBitsToHalf((short)0x0401)}.
+     * A constant holding the largest positive finite value of type {@code Half},
+     * (2-2<sup>-10</sup>)&middot;2<sup>15</sup>.
+     * 
+     * <p>
+     * It is equal to {@link #shortBitsToHalf(short) shortBitsToHalf((short)0xfbff)}.
+     */
+    public static final Half NEGATIVE_MAX_VALUE = shortBitsToHalf((short) 0xfbff);
+
+    /**
+     * A constant holding the smallest positive normal value of type {@code Half}, 2<sup>-14</sup>.
+     * 
+     * <p>
+     * It is equal to {@link #shortBitsToHalf(short) shortBitsToHalf((short)0x0400)}.
      */
     public static final Half MIN_NORMAL = shortBitsToHalf((short) 0x0400); // 6.103515625E-5
 
     /**
-     * A constant holding the smallest positive nonzero value of type {@code Half}, 2<sup>-24</sup>. It is equal to
-     * {@code Half.shortBitsToHalf((short)0x1)}.
+     * A constant holding the smallest positive nonzero value of type {@code Half}, 2<sup>-24</sup>.
+     * 
+     * <p>
+     * It is equal to {@link #shortBitsToHalf(short) shortBitsToHalf((short)0x1)}.
      */
     public static final Half MIN_VALUE = shortBitsToHalf((short) 0x1); // 5.9604645E-8
 
     /**
-     * Maximum exponent a finite {@code Half} variable may have. It is equal to the value returned by
-     * {@code Math.getExponent(Half.MAX_VALUE.floatValue())}.
+     * Maximum exponent a finite {@code Half} variable may have.
+     * 
+     * <p>
+     * It is equal to the value returned by {@code HalfMath.getExponent(Half.MAX_VALUE)}.
      */
     public static final int MAX_EXPONENT = 15;
 
     /**
-     * Minimum exponent a normalized {@code Half} variable may have. It is equal to the value returned by
-     * {@code Math.getExponent(Half.MIN_NORMAL.floatValue())}.
+     * Minimum exponent a normalized {@code Half} variable may have.
+     * 
+     * <p>
+     * It is equal to the value returned by {@code HalfMath.getExponent(Half.MIN_NORMAL)}.
      */
     public static final int MIN_EXPONENT = -14;
 
@@ -86,14 +115,18 @@ public class Half extends Number implements Comparable<Half> {
     public static final int BYTES = SIZE / Byte.SIZE;
 
     /**
-     * A constant holding the positive zero of type {@code Half}. It is equal to the value returned by
-     * {@code Half.shortBitsToHalf((short)0x0)}.
+     * A constant holding the positive zero of type {@code Half}.
+     * 
+     * <p>
+     * It is equal to the value returned by {@link #shortBitsToHalf(short) shortBitsToHalf((short)0x0)}.
      */
     public static final Half POSITIVE_ZERO = shortBitsToHalf((short) 0x0);
 
     /**
-     * A constant holding the negative zero of type {@code Half}. It is equal to the value returned by
-     * {@code Half.shortBitsToHalf((short)0x8000)}.
+     * A constant holding the negative zero of type {@code Half}.
+     * 
+     * <p>
+     * It is equal to the value returned by {@link #shortBitsToHalf(short) shortBitsToHalf((short)0x8000)}.
      */
     public static final Half NEGATIVE_ZERO = shortBitsToHalf((short) 0x8000);
 
@@ -108,6 +141,7 @@ public class Half extends Number implements Comparable<Half> {
 
     private Half(float floatRepresentation) {
         /* Hidden Constructor */
+        super();
         this.floatRepresentation = floatRepresentation;
     }
 
@@ -147,14 +181,14 @@ public class Half extends Number implements Comparable<Half> {
      * <i>s</i>&middot;<i>m</i>&middot;2<sup><i>e</i>-25</sup>.
      *
      * <p>
-     * Note that this method may not be able to return a {@code float} NaN with exactly same bit pattern as the
-     * {@code int} argument. IEEE 754 distinguishes between two kinds of NaNs, quiet NaNs and <i>signaling NaNs</i>. The
-     * differences between the two kinds of NaN are generally not visible in Java. Arithmetic operations on signaling
-     * NaNs turn them into quiet NaNs with a different, but often similar, bit pattern. However, on some processors
-     * merely copying a signaling NaN also performs that conversion. In particular, copying a signaling NaN to return it
-     * to the calling method may perform this conversion. So {@code intBitsToFloat} may not be able to return a
-     * {@code float} with a signaling NaN bit pattern. Consequently, for some {@code int} values,
-     * {@code floatToRawIntBits(intBitsToFloat(start))} may <i>not</i> equal {@code start}. Moreover, which particular
+     * Note that this method may not be able to return a {@code Half} NaN with exactly same bit pattern as the
+     * {@code short} argument. IEEE 754 distinguishes between two kinds of NaNs, quiet NaNs and <i>signaling NaNs</i>.
+     * The differences between the two kinds of NaN are generally not visible in Java. Arithmetic operations on
+     * signaling NaNs turn them into quiet NaNs with a different, but often similar, bit pattern. However, on some
+     * processors merely copying a signaling NaN also performs that conversion. In particular, copying a signaling NaN
+     * to return it to the calling method may perform this conversion. So {@code shortBitsToHalf} may not be able to
+     * return a {@code Half} with a signaling NaN bit pattern. Consequently, for some {@code short} values,
+     * {@code halfToRawShortBits(shortBitsToHalf(start))} may <i>not</i> equal {@code start}. Moreover, which particular
      * bit patterns represent signaling NaNs is platform dependent; although all NaN bit patterns, quiet or signaling,
      * must be in the NaN range identified above.
      *
@@ -164,18 +198,18 @@ public class Half extends Number implements Comparable<Half> {
      * @return the {@code Half} float-point object with the same bit pattern.
      */
     public static Half shortBitsToHalf(short shortBits) {
-        return new Half(halfToFloat(shortBits));
+        return new Half(halfShortToFloat(shortBits));
     }
 
-    private static float halfToFloat(short shortBits) {
+    private static float halfShortToFloat(short shortBits) {
         int intBits = (int) shortBits;
-        int exponent = (intBits & 0x7C00) >> 10;
-        int significand = (intBits & 0x03FF) << 13;
+        int exponent = (intBits & HalfConsts.EXP_BIT_MASK) >> 10;
+        int significand = (intBits & HalfConsts.SIGNIF_BIT_MASK) << 13;
 
         // Check infinities and NaN
         if (exponent == 31) {
             // sign | positive infinity integer value | significand
-            return Float.intBitsToFloat((intBits & 0x8000) << 16 | 0x7f800000 | significand);
+            return Float.intBitsToFloat((intBits & HalfConsts.SIGN_BIT_MASK) << 16 | 0x7f800000 | significand);
         }
 
         int v = Float.floatToIntBits((float) significand) >> 23;
@@ -191,24 +225,24 @@ public class Half extends Number implements Comparable<Half> {
      * format" bit layout.
      *
      * <p>
-     * Bit 31 (the bit that is selected by the mask {@code 0x80000000}) represents the sign of the floating-point
-     * number. Bits 30-23 (the bits that are selected by the mask {@code 0x7f800000}) represent the exponent. Bits 22-0
-     * (the bits that are selected by the mask {@code 0x007fffff}) represent the significand (sometimes called the
-     * mantissa) of the floating-point number.
+     * Bit 15 (the bit that is selected by the mask {@code 0x8000}) represents the sign of the floating-point number.
+     * Bits 14-10 (the bits that are selected by the mask {@code 0x7c00}) represent the exponent. Bits 9-0 (the bits
+     * that are selected by the mask {@code 0x03ff}) represent the significand (sometimes called the mantissa) of the
+     * floating-point number.
      *
      * <p>
-     * If the argument is positive infinity, the result is {@code 0x7f800000}.
+     * If the argument is positive infinity, the result is {@code 0x7c00}.
      *
      * <p>
-     * If the argument is negative infinity, the result is {@code 0xff800000}.
+     * If the argument is negative infinity, the result is {@code 0xfc00}.
      *
      * <p>
-     * If the argument is NaN, the result is {@code 0x7fc00000}.
+     * If the argument is NaN, the result is {@code 0x7e00}.
      *
      * <p>
-     * In all cases, the result is an integer that, when given to the {@link #shortBitsToHalf(short)} method, will
-     * produce a floating-point value the same as the argument to {@code floatToIntBits} (except all NaN values are
-     * collapsed to a single "canonical" NaN value).
+     * In all cases, the result is a short that, when given to the {@link #shortBitsToHalf(short)} method, will produce
+     * a floating-point value the same as the argument to {@code halfToShortBits} (except all NaN values are collapsed
+     * to a single "canonical" NaN value).
      *
      * @param half
      *            a Half object.
@@ -227,16 +261,16 @@ public class Half extends Number implements Comparable<Half> {
      * format" bit layout, preserving Not-a-Number (NaN) values.
      *
      * <p>
-     * Bit 31 (the bit that is selected by the mask {@code 0x80000000}) represents the sign of the floating-point
-     * number. Bits 30-23 (the bits that are selected by the mask {@code 0x7f800000}) represent the exponent. Bits 22-0
-     * (the bits that are selected by the mask {@code 0x007fffff}) represent the significand (sometimes called the
-     * mantissa) of the floating-point number.
+     * Bit 15 (the bit that is selected by the mask {@code 0x8000}) represents the sign of the floating-point number.
+     * Bits 14-10 (the bits that are selected by the mask {@code 0x7c00}) represent the exponent. Bits 9-0 (the bits
+     * that are selected by the mask {@code 0x03ff}) represent the significand (sometimes called the mantissa) of the
+     * floating-point number.
      *
      * <p>
-     * If the argument is positive infinity, the result is {@code 0x7f800000}.
+     * If the argument is positive infinity, the result is {@code 0x7c00}.
      *
      * <p>
-     * If the argument is negative infinity, the result is {@code 0xff800000}.
+     * If the argument is negative infinity, the result is {@code 0xfc00}.
      *
      * <p>
      * If the argument is NaN, the result is the integer representing the actual NaN value. Unlike the
@@ -244,8 +278,8 @@ public class Half extends Number implements Comparable<Half> {
      * to a single "canonical" NaN value.
      *
      * <p>
-     * In all cases, the result is an integer that, when given to the {@link #shortBitsToHalf(short)} method, will
-     * produce a floating-point value the same as the argument to {@code halfToRawShortBits}.
+     * In all cases, the result is a short that, when given to the {@link #shortBitsToHalf(short)} method, will produce
+     * a floating-point value the same as the argument to {@code halfToRawShortBits}.
      *
      * @param half
      *            a Half object.
@@ -257,32 +291,34 @@ public class Half extends Number implements Comparable<Half> {
     }
 
     private static short floatToHalfShortBits(float floatValue) {
-        int intBits = Float.floatToIntBits(floatValue);
+        int intBits = Float.floatToRawIntBits(floatValue);
         int exponent = (intBits & 0x7F800000) >> 23;
         int significand = intBits & 0x007FFFFF;
 
-        // Check infinities
+        // Check infinities and NaNs
         if (exponent > 142) {
             // sign | positive infinity short value
-            return (short) ((intBits & 0x80000000) >> 16 | 0x7c00);
+            return (short) ((intBits & 0x80000000) >> 16 | 0x7c00 | significand >> 13);
         }
 
-        // sign | normal | subnormal | ??
+        // sign | normal | subnormal
         return (short) ((intBits & 0x80000000) >> 16
                 | (exponent > 112 ? 1 : 0) * ((((exponent - 112) << 10) & 0x7C00) | significand >> 13)
                 | ((exponent < 113 ? 1 : 0) & (exponent > 101 ? 1 : 0))
-                        * ((((0x007FF000 + significand) >> (125 - exponent)) + 1) >> 1)
-                | (exponent > 143 ? 1 : 0) * 0x7FFF);
+                        * ((((0x007FF000 + significand) >> (125 - exponent)) + 1) >> 1));
     }
 
+    /**
+     * Returns the value of the specified number as a {@code short}.
+     *
+     * @return the numeric value represented by this object after conversion to type {@code short}.
+     */
     @Override
     public short shortValue() {
-        if (isInfinite()) {
-            return ((Float.floatToIntBits(floatValue()) & 0x80000000) >> 31) == 0 ? Short.MAX_VALUE : Short.MIN_VALUE;
-        } else if (floatValue() > Short.MAX_VALUE || floatValue() < Short.MIN_VALUE) {
+        if (isInfinite() || floatValue() > Short.MAX_VALUE || floatValue() < Short.MIN_VALUE) {
             return ((Float.floatToIntBits(floatValue()) & 0x80000000) >> 31) == 0 ? Short.MAX_VALUE : Short.MIN_VALUE;
         }
-        return super.shortValue();
+        return (short) floatValue();
     }
 
     @Override
@@ -302,12 +338,21 @@ public class Half extends Number implements Comparable<Half> {
 
     @Override
     public double doubleValue() {
-        // return halfToDouble(this);
         return floatValue();
     }
 
     /**
-     * Returns a {@code Float} object holding the {@code float} value represented by the argument string {@code s}.
+     * Returns the value of the specified number as a {@code byte}.
+     *
+     * @return the numeric value represented by this object after conversion to type {@code byte}.
+     */
+    @Override
+    public byte byteValue() {
+        return (byte) shortValue();
+    }
+
+    /**
+     * Returns a {@code Half} object represented by the argument string {@code s}.
      *
      * <p>
      * If {@code s} is {@code null}, then a {@code NullPointerException} is thrown.
@@ -359,50 +404,40 @@ public class Half extends Number implements Comparable<Half> {
      * form of a <i>FloatValue</i>, then a {@code NumberFormatException} is thrown. Otherwise, {@code s} is regarded as
      * representing an exact decimal value in the usual "computerized scientific notation" or as an exact hexadecimal
      * value; this exact numerical value is then conceptually converted to an "infinitely precise" binary value that is
-     * then rounded to type {@code float} by the usual round-to-nearest rule of IEEE 754 floating-point arithmetic,
-     * which includes preserving the sign of a zero value.
+     * then rounded to type {@code half} by the usual round-to-nearest rule of IEEE 754 floating-point arithmetic, which
+     * includes preserving the sign of a zero value.
      *
      * Note that the round-to-nearest rule also implies overflow and underflow behaviour; if the exact value of
-     * {@code s} is large enough in magnitude (greater than or equal to ({@link #MAX_VALUE} + {@link Math#ulp(float)
-     * ulp(MAX_VALUE)}/2), rounding to {@code float} will result in an infinity and if the exact value of {@code s} is
-     * small enough in magnitude (less than or equal to {@link #MIN_VALUE}/2), rounding to float will result in a zero.
+     * {@code s} is large enough in magnitude (greater than or equal to ({@link #MAX_VALUE} +
+     * {@link HalfMath#ulp(Half half) HalfMath.ulp(MAX_VALUE)}/2), rounding to {@code float} will result in an infinity
+     * and if the exact value of {@code s} is small enough in magnitude (less than or equal to {@link #MIN_VALUE}/2),
+     * rounding to float will result in a zero.
      *
-     * Finally, after rounding a {@code Float} object representing this {@code float} value is returned.
+     * Finally, after rounding a {@code Half} object is returned.
      *
      * <p>
      * To interpret localized string representations of a floating-point value, use subclasses of
      * {@link java.text.NumberFormat}.
      *
      * <p>
-     * Note that trailing format specifiers, specifiers that determine the type of a floating-point literal
-     * ({@code 1.0f} is a {@code float} value; {@code 1.0d} is a {@code double} value), do <em>not</em> influence the
-     * results of this method. In other words, the numerical value of the input string is converted directly to the
-     * target floating-point type. In general, the two-step sequence of conversions, string to {@code double} followed
-     * by {@code double} to {@code float}, is <em>not</em> equivalent to converting a string directly to {@code float}.
-     * For example, if first converted to an intermediate {@code double} and then to {@code float}, the string<br>
-     * {@code "1.00000017881393421514957253748434595763683319091796875001d"}<br>
-     * results in the {@code float} value {@code 1.0000002f}; if the string is converted directly to {@code float},
-     * <code>1.000000<b>1</b>f</code> results.
-     *
-     * <p>
      * To avoid calling this method on an invalid string and having a {@code NumberFormatException} be thrown, the
      * documentation for {@link Double#valueOf Double.valueOf} lists a regular expression which can be used to screen
      * the input.
      *
-     * @param value
+     * @param s
      *            the string to be parsed.
      * 
-     * @return a {@code Float} object holding the value represented by the {@code String} argument.
+     * @return a {@code Half} object holding the value represented by the {@code String} argument.
      * 
      * @throws NumberFormatException
      *             if the string does not contain a parsable number.
      */
-    public static Half valueOf(String value) throws NumberFormatException {
-        return valueOf(Float.valueOf(value));
+    public static Half valueOf(String s) throws NumberFormatException {
+        return valueOf(Float.valueOf(s));
     }
 
     /**
-     * Returns a {@code Half} instance representing the specified {@code float} value.
+     * Returns a {@code Half} instance representing the specified {@code double} value.
      *
      * @param doubleValue
      *            a double value.
@@ -414,7 +449,7 @@ public class Half extends Number implements Comparable<Half> {
     }
 
     /**
-     * Returns a {@code Half} instance representing the specified {@code float} value.
+     * Returns a {@code Half} instance representing the specified {@code Double} value.
      *
      * @param doubleValue
      *            a double value.
@@ -434,8 +469,11 @@ public class Half extends Number implements Comparable<Half> {
      * @return a {@code Half} instance representing {@code floatValue}.
      */
     public static Half valueOf(float floatValue) {
-        // instance -> short bits -> instance using short bits to deal with half point overflow
-        return shortBitsToHalf(halfToShortBits(new Half(floatValue)));
+        // check for infinities
+        if (floatValue > 65504.0f || floatValue < -65504.0f) {
+            return Half.shortBitsToHalf((short) ((Float.floatToIntBits(floatValue) & 0x80000000) >> 16 | 0x7c00));
+        }
+        return new Half(floatValue);
     }
 
     /**
@@ -448,6 +486,18 @@ public class Half extends Number implements Comparable<Half> {
      */
     public static Half valueOf(Float floatValue) {
         return valueOf(floatValue.floatValue());
+    }
+
+    /**
+     * Returns a new {@code Half} instance identical to the specified {@code half}.
+     *
+     * @param half
+     *            a half instance.
+     * 
+     * @return a {@code Half} instance representing {@code doubleValue}.
+     */
+    public static Half valueOf(Half half) {
+        return shortBitsToHalf(halfToRawShortBits(half));
     }
 
     /**
@@ -543,13 +593,8 @@ public class Half extends Number implements Comparable<Half> {
      *
      * </ul>
      * </ul>
-     * How many digits must be printed for the fractional part of <i>m</i> or <i>a</i>? There must be at least one digit
-     * to represent the fractional part, and beyond that as many, but only as many, more digits as are needed to
-     * uniquely distinguish the argument value from adjacent values of type {@code float}. That is, suppose that
-     * <i>x</i> is the exact mathematical value represented by the decimal representation produced by this method for a
-     * finite nonzero argument <i>f</i>. Then <i>f</i> must be the {@code float} value nearest to <i>x</i>; or, if two
-     * {@code float} values are equally close to <i>x</i>, then <i>f</i> must be one of them and the least significant
-     * bit of the significand of <i>f</i> must be {@code 0}.
+     * Handled as a float and number of significant digits is determined by {@link Float#toString(float f)
+     * Float.toString(floatValue)} using results of {@link #floatValue()} call using {@code half} instance.
      *
      * <p>
      * To create localized string representations of a floating-point value, use subclasses of
@@ -561,6 +606,8 @@ public class Half extends Number implements Comparable<Half> {
      * @return a string representation of the argument.
      */
     public static String toString(Half half) {
+        // Use float toString for now
+        // Should have own toString implementation for better result.
         return Float.toString(half.floatRepresentation);
     }
 
@@ -586,17 +633,17 @@ public class Half extends Number implements Comparable<Half> {
      * <li>If <i>m</i> is zero, it is represented by the string {@code "0x0.0p0"}; thus, negative zero produces the
      * result {@code "-0x0.0p0"} and positive zero produces the result {@code "0x0.0p0"}.
      *
-     * <li>If <i>m</i> is a {@code float} value with a normalized representation, substrings are used to represent the
+     * <li>If <i>m</i> is a {@code half} with a normalized representation, substrings are used to represent the
      * significand and exponent fields. The significand is represented by the characters {@code "0x1."} followed by a
      * lowercase hexadecimal representation of the rest of the significand as a fraction. Trailing zeros in the
      * hexadecimal representation are removed unless all the digits are zero, in which case a single zero is used. Next,
      * the exponent is represented by {@code "p"} followed by a decimal string of the unbiased exponent as if produced
      * by a call to {@link Integer#toString(int) Integer.toString} on the exponent value.
      *
-     * <li>If <i>m</i> is a {@code float} value with a subnormal representation, the significand is represented by the
+     * <li>If <i>m</i> is a {@code half} with a subnormal representation, the significand is represented by the
      * characters {@code "0x0."} followed by a hexadecimal representation of the rest of the significand as a fraction.
      * Trailing zeros in the hexadecimal representation are removed. Next, the exponent is represented by
-     * {@code "p-126"}. Note that there must be at least one nonzero digit in a subnormal significand.
+     * {@code "p-14"}. Note that there must be at least one nonzero digit in a subnormal significand.
      *
      * </ul>
      *
@@ -627,16 +674,16 @@ public class Half extends Number implements Comparable<Half> {
      * <td>{@code 0x1.0p-2}</td>
      * <tr>
      * <th scope="row">{@code Float.MAX_VALUE}</th>
-     * <td>{@code 0x1.fffffep127}</td>
+     * <td>{@code 0x1.ffcp15}</td>
      * <tr>
      * <th scope="row">{@code Minimum Normal Value}</th>
-     * <td>{@code 0x1.0p-126}</td>
+     * <td>{@code 0x1.0p-14}</td>
      * <tr>
      * <th scope="row">{@code Maximum Subnormal Value}</th>
-     * <td>{@code 0x0.fffffep-126}</td>
+     * <td>{@code 0x0.ffcp-14}</td>
      * <tr>
      * <th scope="row">{@code Float.MIN_VALUE}</th>
-     * <td>{@code 0x0.000002p-126}</td> </tbody>
+     * <td>{@code 0x0.004p-14}</td> </tbody>
      * </table>
      * 
      * @param half
@@ -645,7 +692,15 @@ public class Half extends Number implements Comparable<Half> {
      * @return a hex string representation of the argument.
      */
     public static String toHexString(Half half) {
-        return Float.toHexString(half.floatRepresentation);
+        // Check subnormal
+        if (HalfMath.abs(half).compareTo(Half.MIN_NORMAL) < 0 && !HalfMath.abs(half).equals(Half.POSITIVE_ZERO)) {
+            String s = Double
+                    .toHexString(Math.scalb((double) half.floatValue(), Double.MIN_EXPONENT - Half.MIN_EXPONENT));
+            return s.replaceFirst("p-1022$", "p-14");
+        } else {
+            // double string will be the same as half string
+            return Double.toHexString(half.floatValue());
+        }
     }
 
     @Override
@@ -720,7 +775,8 @@ public class Half extends Number implements Comparable<Half> {
 
     /**
      * Returns the greater of two {@code Half} objects.<br>
-     * Determined using {@link Half#floatValue() Half.floatValue} and calling {@link Math#max(float, float) Math.max}.
+     * Determined using {@link #floatValue() aFloatValue = a.floatValue()} and {@link #floatValue() bFloatValue =
+     * b.floatValue()} then calling {@link Float#max(float, float) Float.max(aFloatValue, bFloatValue)}.
      *
      * @param a
      *            the first operand
@@ -737,7 +793,8 @@ public class Half extends Number implements Comparable<Half> {
 
     /**
      * Returns the smaller of two {@code Half} objects.<br>
-     * Determined using {@link Half#floatValue() Half.floatValue} and calling {@link Math#min(float, float) Math.min}.
+     * Determined using {@link #floatValue() aFloatValue = a.floatValue()} and {@link #floatValue() bFloatValue =
+     * b.floatValue()} then calling {@link Float#min(float, float) Float.min(aFloatValue, bFloatValue)}.
      *
      * @param a
      *            the first operand

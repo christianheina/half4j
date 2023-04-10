@@ -48,19 +48,42 @@ public class HalfTest {
     @Test
     public void publicStaticClassVariableTest() {
         Assert.assertEquals(Half.halfToShortBits(Half.POSITIVE_INFINITY), POSITIVE_INFINITY_SHORT_VALUE);
+        Assert.assertEquals(Half.POSITIVE_INFINITY, Half.shortBitsToHalf(POSITIVE_INFINITY_SHORT_VALUE));
+
         Assert.assertEquals(Half.halfToShortBits(Half.NEGATIVE_INFINITY), NEGATIVE_INFINITY_SHORT_VALUE);
+        Assert.assertEquals(Half.NEGATIVE_INFINITY, Half.shortBitsToHalf(NEGATIVE_INFINITY_SHORT_VALUE));
 
         Assert.assertEquals(Half.halfToShortBits(Half.NaN), NaN_SHORT_VALUE);
+        Assert.assertEquals(Half.NaN, Half.shortBitsToHalf(NaN_SHORT_VALUE));
+
         Assert.assertEquals(Half.halfToShortBits(Half.MAX_VALUE), MAX_VALUE_SHORT_VALUE);
+        Assert.assertEquals(Half.MAX_VALUE, Half.shortBitsToHalf(MAX_VALUE_SHORT_VALUE));
+
+        Assert.assertEquals(Half.halfToShortBits(Half.NEGATIVE_MAX_VALUE), NEGATIVE_MAX_VALUE_SHORT_VALUE);
+        Assert.assertEquals(Half.NEGATIVE_MAX_VALUE, Half.shortBitsToHalf(NEGATIVE_MAX_VALUE_SHORT_VALUE));
+
         Assert.assertEquals(Half.halfToShortBits(Half.MIN_NORMAL), MIN_NORMAL_SHORT_VALUE);
+        Assert.assertEquals(Half.MIN_NORMAL, Half.shortBitsToHalf(MIN_NORMAL_SHORT_VALUE));
+        Assert.assertEquals(Half.MIN_NORMAL.doubleValue(), Math.pow(2, -14));
+
         Assert.assertEquals(Half.halfToShortBits(Half.MIN_VALUE), MIN_VALUE_SHORT_VALUE);
+        Assert.assertEquals(Half.MIN_VALUE, Half.shortBitsToHalf(MIN_VALUE_SHORT_VALUE));
+        Assert.assertEquals(Half.MIN_VALUE.doubleValue(), Math.pow(2, -24));
+
         Assert.assertEquals(Half.MAX_EXPONENT, MAX_EXPONENT);
+        Assert.assertEquals(Half.MAX_EXPONENT, Math.getExponent(Half.MAX_VALUE.floatValue()));
 
         Assert.assertEquals(Half.MIN_EXPONENT, MIN_EXPONENT);
+        Assert.assertEquals(Half.MIN_EXPONENT, Math.getExponent(Half.MIN_NORMAL.floatValue()));
+
         Assert.assertEquals(Half.SIZE, SIZE);
         Assert.assertEquals(Half.BYTES, BYTES);
+
         Assert.assertEquals(Half.halfToShortBits(Half.POSITIVE_ZERO), POSITIVE_ZERO_SHORT_VALUE);
+        Assert.assertEquals(Half.POSITIVE_ZERO, Half.shortBitsToHalf(POSITIVE_ZERO_SHORT_VALUE));
+
         Assert.assertEquals(Half.halfToShortBits(Half.NEGATIVE_ZERO), NEGATIVE_ZERO_SHORT_VALUE);
+        Assert.assertEquals(Half.NEGATIVE_ZERO, Half.shortBitsToHalf(NEGATIVE_ZERO_SHORT_VALUE));
     }
 
     @Test
@@ -82,6 +105,8 @@ public class HalfTest {
         Assert.assertEquals(Half.halfToShortBits(Half.POSITIVE_INFINITY), POSITIVE_INFINITY_SHORT_VALUE);
         Assert.assertEquals(Half.halfToShortBits(Half.NEGATIVE_INFINITY), NEGATIVE_INFINITY_SHORT_VALUE);
         Assert.assertEquals(Half.halfToShortBits(Half.NaN), NaN_SHORT_VALUE);
+        Assert.assertEquals(Half.halfToShortBits(Half.shortBitsToHalf((short) 0x7e04)), NaN_SHORT_VALUE);
+        Assert.assertEquals(Half.halfToShortBits(Half.shortBitsToHalf((short) 0x7fff)), NaN_SHORT_VALUE);
         Assert.assertEquals(Half.halfToShortBits(Half.MAX_VALUE), MAX_VALUE_SHORT_VALUE);
         Assert.assertEquals(Half.halfToShortBits(Half.MIN_NORMAL), MIN_NORMAL_SHORT_VALUE);
         Assert.assertEquals(Half.halfToShortBits(Half.MIN_VALUE), MIN_VALUE_SHORT_VALUE);
@@ -93,9 +118,14 @@ public class HalfTest {
 
     @Test
     public void halfToRawShortBitsTest() {
+        Half.halfToRawShortBits(Half.POSITIVE_INFINITY);
         Assert.assertEquals(Half.halfToRawShortBits(Half.POSITIVE_INFINITY), POSITIVE_INFINITY_SHORT_VALUE);
         Assert.assertEquals(Half.halfToRawShortBits(Half.NEGATIVE_INFINITY), NEGATIVE_INFINITY_SHORT_VALUE);
-        Assert.assertEquals(Half.halfToRawShortBits(Half.NaN), (short) 0x7c00);
+        Assert.assertEquals(Half.halfToRawShortBits(Half.NaN), NaN_SHORT_VALUE);
+        Assert.assertEquals(Half.halfToRawShortBits(Half.shortBitsToHalf((short) 0x7e04)), (short) 0x7e04);
+        Assert.assertEquals(Half.halfToRawShortBits(Half.shortBitsToHalf((short) 0x7fff)), (short) 0x7fff);
+        Assert.assertEquals(Half.halfToRawShortBits(Half.valueOf(Float.intBitsToFloat(0x7fe00000))), (short) 0x7f00);
+        Assert.assertEquals(Half.halfToRawShortBits(Half.valueOf(Float.intBitsToFloat(0x7fe00001))), (short) 0x7f00);
         Assert.assertEquals(Half.halfToRawShortBits(Half.MAX_VALUE), MAX_VALUE_SHORT_VALUE);
         Assert.assertEquals(Half.halfToRawShortBits(Half.MIN_NORMAL), MIN_NORMAL_SHORT_VALUE);
         Assert.assertEquals(Half.halfToRawShortBits(Half.MIN_VALUE), MIN_VALUE_SHORT_VALUE);
@@ -177,7 +207,20 @@ public class HalfTest {
     }
 
     @Test
+    public void byteValueTest() {
+        Assert.assertEquals(Half.POSITIVE_INFINITY.byteValue(), Float.valueOf(Float.POSITIVE_INFINITY).byteValue());
+        Assert.assertEquals(Half.NEGATIVE_INFINITY.byteValue(), Float.valueOf(Float.NEGATIVE_INFINITY).byteValue());
+        Assert.assertEquals(Half.NaN.byteValue(), Float.valueOf(Float.NaN).byteValue());
+        Assert.assertEquals(Half.MAX_VALUE.byteValue(), Float.valueOf(Float.MAX_VALUE).byteValue());
+        Assert.assertEquals(Half.MIN_NORMAL.byteValue(), Float.valueOf(Float.MIN_NORMAL).byteValue());
+        Assert.assertEquals(Half.MIN_VALUE.byteValue(), Float.valueOf(Float.MIN_VALUE).byteValue());
+        Assert.assertEquals(Half.POSITIVE_ZERO.byteValue(), Float.valueOf(0.0f).byteValue());
+        Assert.assertEquals(Half.NEGATIVE_ZERO.byteValue(), Float.valueOf(-0.0f).byteValue());
+    }
+
+    @Test
     public void valueOfStringTest() {
+        // Decmial values
         Assert.assertEquals(Half.valueOf("Infinity"), Half.POSITIVE_INFINITY);
         Assert.assertEquals(Half.valueOf("-Infinity"), Half.NEGATIVE_INFINITY);
         Assert.assertEquals(Half.valueOf("NaN"), Half.NaN);
@@ -188,6 +231,26 @@ public class HalfTest {
         Assert.assertEquals(Half.valueOf("-0"), Half.NEGATIVE_ZERO);
 
         Assert.assertEquals(Half.valueOf("1.00097656f"), LOWEST_ABOVE_ONE);
+
+        // Hex values
+        Assert.assertEquals(Half.valueOf("0x1.0p0"), Half.valueOf(1.0f));
+        Assert.assertEquals(Half.valueOf("-0x1.0p0"), Half.valueOf(-1.0f));
+        Assert.assertEquals(Half.valueOf("0x1.0p1"), Half.valueOf(2.0f));
+        Assert.assertEquals(Half.valueOf("0x1.8p1"), Half.valueOf(3.0f));
+        Assert.assertEquals(Half.valueOf("0x1.0p-1"), Half.valueOf(0.5f));
+        Assert.assertEquals(Half.valueOf("0x1.0p-2"), Half.valueOf(0.25f));
+        Assert.assertEquals(Half.valueOf("0x0.ffcp-14"), Half.shortBitsToHalf((short) 0x3ff));
+    }
+
+    @Test(expectedExceptions = NumberFormatException.class)
+    public void valueOfStringNumberFormatExceptionTest() {
+        Half.valueOf("ABC");
+    }
+
+    @Test(expectedExceptions = NullPointerException.class)
+    public void valueOfStringNullPointerExceptionTest() {
+        String s = null;
+        Half.valueOf(s);
     }
 
     @Test
@@ -216,6 +279,20 @@ public class HalfTest {
         Assert.assertEquals(Half.valueOf(Float.valueOf(-0f)), Half.NEGATIVE_ZERO);
 
         Assert.assertEquals(Half.valueOf(Float.valueOf(1.00097656f)), LOWEST_ABOVE_ONE);
+    }
+
+    @Test
+    public void valueOfHalfTest() {
+        Assert.assertEquals(Half.valueOf(Half.POSITIVE_INFINITY), Half.POSITIVE_INFINITY);
+        Assert.assertEquals(Half.valueOf(Half.NEGATIVE_INFINITY), Half.NEGATIVE_INFINITY);
+        Assert.assertEquals(Half.valueOf(Half.NaN), Half.NaN);
+        Assert.assertEquals(Half.valueOf(Half.MAX_VALUE), Half.MAX_VALUE);
+        Assert.assertEquals(Half.valueOf(Half.MIN_NORMAL), Half.MIN_NORMAL);
+        Assert.assertEquals(Half.valueOf(Half.MIN_VALUE), Half.MIN_VALUE);
+        Assert.assertEquals(Half.valueOf(Half.POSITIVE_ZERO), Half.POSITIVE_ZERO);
+        Assert.assertEquals(Half.valueOf(Half.NEGATIVE_ZERO), Half.NEGATIVE_ZERO);
+
+        Assert.assertEquals(Half.valueOf(LOWEST_ABOVE_ONE), LOWEST_ABOVE_ONE);
     }
 
     @Test
@@ -276,7 +353,24 @@ public class HalfTest {
 
     @Test
     public void toHexStringTest() {
-        // TODO: implement unit test
+        Assert.assertEquals(Half.toHexString(Half.POSITIVE_INFINITY), "Infinity");
+        Assert.assertEquals(Half.toHexString(Half.NEGATIVE_INFINITY), "-Infinity");
+        Assert.assertEquals(Half.toHexString(Half.NaN), "NaN");
+        Assert.assertEquals(Half.toHexString(Half.MAX_VALUE), "0x1.ffcp15");
+        Assert.assertEquals(Half.toHexString(Half.MIN_NORMAL).toLowerCase(), "0x1.0p-14");
+        Assert.assertEquals(Half.toHexString(Half.MIN_VALUE).toLowerCase(), "0x0.004p-14");
+        Assert.assertEquals(Half.toHexString(Half.POSITIVE_ZERO), "0x0.0p0");
+        Assert.assertEquals(Half.toHexString(Half.NEGATIVE_ZERO), "-0x0.0p0");
+
+        Assert.assertEquals(Half.toHexString(LOWEST_ABOVE_ONE), "0x1.004p0");
+
+        Assert.assertEquals(Half.toHexString(Half.valueOf(1.0f)), "0x1.0p0");
+        Assert.assertEquals(Half.toHexString(Half.valueOf(-1.0f)), "-0x1.0p0");
+        Assert.assertEquals(Half.toHexString(Half.valueOf(2.0f)), "0x1.0p1");
+        Assert.assertEquals(Half.toHexString(Half.valueOf(3.0f)), "0x1.8p1");
+        Assert.assertEquals(Half.toHexString(Half.valueOf(0.5f)), "0x1.0p-1");
+        Assert.assertEquals(Half.toHexString(Half.valueOf(0.25f)), "0x1.0p-2");
+        Assert.assertEquals(Half.toHexString(Half.shortBitsToHalf((short) 0x3ff)), "0x0.ffcp-14");
     }
 
     @Test
@@ -304,6 +398,11 @@ public class HalfTest {
         Assert.assertFalse(LOWEST_ABOVE_ONE.equals(Half.MIN_NORMAL));
 
         Assert.assertFalse(LOWEST_ABOVE_ONE.equals(null));
+
+        // Additional NaN tests
+        Assert.assertTrue(Half.NaN.equals(Half.NaN));
+        Assert.assertTrue(Half.NaN.equals(Half.shortBitsToHalf((short) 0x7e04)));
+        Assert.assertTrue(Half.NaN.equals(Half.shortBitsToHalf((short) 0x7fff)));
     }
 
     @Test
@@ -362,7 +461,10 @@ public class HalfTest {
         Assert.assertEquals(Half.sum(Half.NaN, Half.MAX_VALUE), Half.NaN);
         Assert.assertEquals(Half.sum(Half.MIN_NORMAL, Half.MIN_VALUE), Half.valueOf(6.109476E-5f));
         Assert.assertEquals(Half.sum(Half.MIN_VALUE, Half.POSITIVE_ZERO), Half.MIN_VALUE);
-        Assert.assertEquals(Half.sum(Half.MAX_VALUE, LOWEST_ABOVE_ONE), Half.MAX_VALUE);
+        Assert.assertEquals(Half.sum(Half.MAX_VALUE, LOWEST_ABOVE_ONE), Half.POSITIVE_INFINITY);
+        Assert.assertEquals(
+                Half.sum(Half.valueOf(-Half.MAX_VALUE.floatValue()), Half.valueOf(-LOWEST_ABOVE_ONE.floatValue())),
+                Half.NEGATIVE_INFINITY);
         Assert.assertEquals(Half.sum(Half.POSITIVE_ZERO, Half.NEGATIVE_ZERO), Half.POSITIVE_ZERO);
 
         Assert.assertEquals(Half.sum(Half.NaN, LOWEST_ABOVE_ONE), Half.NaN);
