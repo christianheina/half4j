@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.christianheina.math.half4j;
+package com.christianheina.langx.half4j;
 
 /**
  * The {@code Half} class implements half precision (FP16) float-point number according to IEEE 754 standard.

@@ -1,6 +1,6 @@
 package examples;
 
-import com.christianheina.math.half4j.Half;
+import com.christianheina.langx.half4j.Half;
 
 /**
  * Get Half value as type, such as doubleValue, example usage.

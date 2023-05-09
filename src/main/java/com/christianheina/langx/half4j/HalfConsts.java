@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.christianheina.math.half4j;
+package com.christianheina.langx.half4j;
 
 /**
  * This class contains additional constants documenting limits of {@code Half}.

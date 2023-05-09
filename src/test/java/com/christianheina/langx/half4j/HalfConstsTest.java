@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.christianheina.math.half4j;
+package com.christianheina.langx.half4j;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;

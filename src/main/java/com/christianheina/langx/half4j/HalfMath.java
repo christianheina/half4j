@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.christianheina.math.half4j;
+package com.christianheina.langx.half4j;
 
 /**
  * The class {@code HalfMath} contains methods for performing basic numeric operations on or using {@link Half} objects.

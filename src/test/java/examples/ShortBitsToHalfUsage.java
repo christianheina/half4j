@@ -1,6 +1,6 @@
 package examples;
 
-import com.christianheina.math.half4j.Half;
+import com.christianheina.langx.half4j.Half;
 
 /**
  * Short bits to Half example usage.
