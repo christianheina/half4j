@@ -30,7 +30,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<testng.version>7.4.0</testng.version>
+		<testng.version>7.10.2</testng.version>
 		<formatter-maven-plugin.version>2.16.0</formatter-maven-plugin.version>
 		<maven-release-plugin.version>3.0.0-M4</maven-release-plugin.version>
 		<maven-deploy-plugin.version>3.0.0-M1</maven-deploy-plugin.version>
